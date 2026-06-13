@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: order-microservice
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/orderdb
+    username: postgres
+    password: lyamanava048
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+
+  liquibase:
+    enabled: true
+    change-log: db/changelog-master.yml
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 5000
+            readTimeout: 5000
+
+server:
+  port: 8082
+
+courier:
+  service:
+    url: http://localhost:8082
+
+rabbitmq:
+  exchange:
+    order: order.exchange
+  routing-key:
+    courier: order.courier.routingkey
+    payment: order.payment.routingkey
+
+logging:
+  level:
+    com.delivery.ordermicroservice: DEBUG
